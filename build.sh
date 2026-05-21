@@ -76,8 +76,10 @@ for pkg in $CUSTOM_PACKAGES; do
   fi
 done
 
-# 拼接
-PACKAGES="$BASE_PACKAGES $CUSTOM_PACKAGES"
+# 拼接并定制最终包列表
+REMOVE_PACKAGES="-kmod-amazon-ena -kmod-amd-xgbe -kmod-bnx2 -kmod-e1000e -kmod-e1000 -kmod-forcedeth -kmod-igb -kmod-ixgbe -kmod-r8169 -kmod-tg3 -luci-app-attendedsysupgrade"
+ADD_PACKAGES="bash block-mount fdisk curl ethtool tcpdump ip-full kmod-hwmon-core kmod-nft-socket kmod-nft-tproxy htop pciutils usbutils wget-ssl kmod-usb3 kmod-usb-xhci-hcd kmod-usb-storage kmod-usb-storage-uas kmod-tcp-bbr kmod-atlantic lm-sensors-detect kmod-usb-hid kmod-lib-zstd kmod-fs-f2fs openssh-sftp-server i915-firmware-dmc luci-i18n-base-zh-cn"
+PACKAGES="$BASE_PACKAGES $CUSTOM_PACKAGES $REMOVE_PACKAGES $ADD_PACKAGES"
 
 # 若构建openclash 则添加内核
 if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
