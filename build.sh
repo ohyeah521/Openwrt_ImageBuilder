@@ -2,35 +2,56 @@
 
 # 先执行 prepare-packages.sh 此脚本用于拷贝所有自定义ipk到packages目录
 sh prepare-packages.sh
-# 以下是仓库内的包名 你可以在openwrt官网仓库查询插件名称
+# 以下是仓库内的包名 你可以在 openwrt 官网仓库查询插件名称：
 # https://downloads.openwrt.org/releases/24.10.6/packages/x86_64/luci/
 # https://mirrors.aliyun.com/openwrt/releases/24.10.6/packages/x86_64/luci/
+
+# ===== 基础包（BASE_PACKAGES） =====
 BASE_PACKAGES=""
 BASE_PACKAGES="$BASE_PACKAGES curl"
-BASE_PACKAGES="$BASE_PACKAGES -dnsmasq"
-# 此处为什么勾选完整版dnsmasq-full 因为openclash需要该依赖 由于dnsmasq和dnsmasq-full 在安装上互斥 因此只能保留一个 减号代表去除
+BASE_PACKAGES="$BASE_PACKAGES -dnsmasq" # 去除基础 dnsmasq
+# 此处为什么勾选完整版 dnsmasq-full 因为 openclash 需要该依赖 由于 dnsmasq 和 dnsmasq-full 在安装上互斥 因此只能保留一个 减号代表去除
 BASE_PACKAGES="$BASE_PACKAGES dnsmasq-full"
 BASE_PACKAGES="$BASE_PACKAGES luci"
 BASE_PACKAGES="$BASE_PACKAGES bash"
-BASE_PACKAGES="$BASE_PACKAGES luci-i18n-ttyd-zh-cn"
+BASE_PACKAGES="$BASE_PACKAGES block-mount"
+BASE_PACKAGES="$BASE_PACKAGES fdisk"
+BASE_PACKAGES="$BASE_PACKAGES ethtool"
+BASE_PACKAGES="$BASE_PACKAGES tcpdump"
+BASE_PACKAGES="$BASE_PACKAGES ip-full"
+BASE_PACKAGES="$BASE_PACKAGES kmod-hwmon-core"
+BASE_PACKAGES="$BASE_PACKAGES kmod-nft-socket"
+BASE_PACKAGES="$BASE_PACKAGES kmod-nft-tproxy"
+BASE_PACKAGES="$BASE_PACKAGES htop"
+BASE_PACKAGES="$BASE_PACKAGES pciutils"
+BASE_PACKAGES="$BASE_PACKAGES usbutils"
+BASE_PACKAGES="$BASE_PACKAGES wget-ssl"
+BASE_PACKAGES="$BASE_PACKAGES kmod-usb3"
+BASE_PACKAGES="$BASE_PACKAGES kmod-usb-xhci-hcd"
+BASE_PACKAGES="$BASE_PACKAGES kmod-usb-storage"
+BASE_PACKAGES="$BASE_PACKAGES kmod-usb-storage-uas"
+BASE_PACKAGES="$BASE_PACKAGES kmod-tcp-bbr"
+BASE_PACKAGES="$BASE_PACKAGES kmod-atlantic"
+BASE_PACKAGES="$BASE_PACKAGES lm-sensors-detect"
+BASE_PACKAGES="$BASE_PACKAGES kmod-usb-hid"
+BASE_PACKAGES="$BASE_PACKAGES kmod-lib-zstd"
+BASE_PACKAGES="$BASE_PACKAGES kmod-fs-f2fs"
 BASE_PACKAGES="$BASE_PACKAGES openssh-sftp-server"
+BASE_PACKAGES="$BASE_PACKAGES i915-firmware-dmc"
+BASE_PACKAGES="$BASE_PACKAGES luci-i18n-base-zh-cn"
+BASE_PACKAGES="$BASE_PACKAGES luci-i18n-ttyd-zh-cn"
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-package-manager-zh-cn"
 BASE_PACKAGES="$BASE_PACKAGES luci-compat"
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-firewall-zh-cn"
-BASE_PACKAGES="$BASE_PACKAGES luci-i18n-base-zh-cn"
 # 文件管理器
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-filemanager-zh-cn"
 # openlist用来平替alist 目前阿里云镜像仓库也有了
 #BASE_PACKAGES="$BASE_PACKAGES luci-i18n-openlist-zh-cn"
-
-#打印机相关
+# 打印机相关
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-p910nd-zh-cn"
 #BASE_PACKAGES="$BASE_PACKAGES luci-i18n-openvpn-zh-cn"
 
-
-
-# 下面是自定义的包 你可以用#注释掉不需要的包 也可以添加更多的包 
-# 使用条件:在extra-packages下放置了相关run或者ipk
+# ===== 自定义包（CUSTOM_PACKAGES：放 extra-packages 目录的三方包） =====
 CUSTOM_PACKAGES=""
 # 第三方插件 文件传输 luci-app-filetransfer
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-lib-fs"
@@ -41,33 +62,24 @@ CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-filetransfer-zh-cn"
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-theme-argon"
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-argon-config-zh-cn"
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-argon-config"
-
-# 第三方插件 istore 应用商店
+# 其余三方插件全部保持注释，想用打开注释即可
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-store"
-# 第三方插件 首页和网络向导
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-quickstart"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-quickstart-zh-cn"
-
-# 第三方插件 luci-app-adguardhome 去广告
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-adguardhome"
-# 第三方插件 openclash 内核放在files/etc/openclash/core/clash_meta 若不勾选则不集成
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-openclash"
-# 第三方插件 luci-app-passwall 包含内部组件
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-passwall"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-passwall-zh-cn"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES geoview"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES xray-core"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES sing-box"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES hysteria"
-# 第三方插件 luci-app-ssr-plus 尤其注意要包含 shadowsocks-libev-ss-server
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-ssr-plus"
-# 第三方插件 luci-app-homeproxy
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-homeproxy-zh-cn"
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-homeproxy"
-# 第三方插件 luci-app-nikki
 #CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-nikki-zh-cn"
 
-# ✅ 校验 CUSTOM_PACKAGES 中的包是否都存在于 packages_names.txt
+# 校验自定义包名合法性
 package_file="packages_names.txt"
 for pkg in $CUSTOM_PACKAGES; do
   if ! grep -qx "$pkg" "$package_file"; then
@@ -76,12 +88,24 @@ for pkg in $CUSTOM_PACKAGES; do
   fi
 done
 
-# 拼接并定制最终包列表
-REMOVE_PACKAGES="-kmod-amazon-ena -kmod-amd-xgbe -kmod-bnx2 -kmod-e1000e -kmod-e1000 -kmod-forcedeth -kmod-igb -kmod-ixgbe -kmod-r8169 -kmod-tg3 -luci-app-attendedsysupgrade"
-ADD_PACKAGES="bash block-mount fdisk curl ethtool tcpdump ip-full kmod-hwmon-core kmod-nft-socket kmod-nft-tproxy htop pciutils usbutils wget-ssl kmod-usb3 kmod-usb-xhci-hcd kmod-usb-storage kmod-usb-storage-uas kmod-tcp-bbr kmod-atlantic lm-sensors-detect kmod-usb-hid kmod-lib-zstd kmod-fs-f2fs openssh-sftp-server i915-firmware-dmc luci-i18n-base-zh-cn"
-PACKAGES="$BASE_PACKAGES $CUSTOM_PACKAGES $REMOVE_PACKAGES $ADD_PACKAGES"
+# ===== 移除不需要的包（REMOVE_PACKAGES） =====
+REMOVE_PACKAGES=""
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-amazon-ena"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-amd-xgbe"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-bnx2"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-e1000e"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-e1000"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-forcedeth"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-igb"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-ixgbe"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-r8169"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -kmod-tg3"
+REMOVE_PACKAGES="$REMOVE_PACKAGES -luci-app-attendedsysupgrade"
 
-# 若构建openclash 则添加内核
+# ===== 最终组合 =====
+PACKAGES="$BASE_PACKAGES $CUSTOM_PACKAGES $REMOVE_PACKAGES"
+
+# 若构建 openclash 则添加内核
 if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
     echo "✅ [构建逻辑] 已选择 luci-app-openclash，添加 openclash core"
     mkdir -p files/etc/openclash/core
@@ -95,8 +119,7 @@ else
     [ -d files/etc/openclash ] && rm -rf files/etc/openclash
 fi
 
-
-# 若构建luci-app-adguardhome 则添加内核
+# 若构建 luci-app-adguardhome 则添加内核
 if echo "$PACKAGES" | grep -q "luci-app-adguardhome"; then
     echo "✅ [构建逻辑] 已选择 luci-app-adguardhome，添加 AdGuardHome core"
     if [ -f extra-packages/temp-unpack/AdGuardHome/AdGuardHome ]; then
@@ -108,7 +131,6 @@ else
     echo "⚪️ [构建逻辑] 未选择 luci-app-adguardhome"
     [ -f files/usr/bin/AdGuardHome ] && rm -f files/usr/bin/AdGuardHome
 fi
-
 
 # 开始构建 软件包大小1024代表1GB 
 # 可选参数FILES=files 代表files目录中若有文件 则覆盖openwrt的根目录 原样注入  
