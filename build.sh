@@ -3,8 +3,8 @@
 # 先执行 prepare-packages.sh 此脚本用于拷贝所有自定义ipk到packages目录
 sh prepare-packages.sh
 # 以下是仓库内的包名 你可以在openwrt官网仓库查询插件名称
-# https://downloads.openwrt.org/releases/24.10.2/packages/x86_64/luci/
-# https://mirrors.aliyun.com/openwrt/releases/24.10.2/packages/x86_64/luci/
+# https://downloads.openwrt.org/releases/24.10.6/packages/x86_64/luci/
+# https://mirrors.aliyun.com/openwrt/releases/24.10.6/packages/x86_64/luci/
 BASE_PACKAGES=""
 BASE_PACKAGES="$BASE_PACKAGES curl"
 BASE_PACKAGES="$BASE_PACKAGES -dnsmasq"
@@ -18,8 +18,6 @@ BASE_PACKAGES="$BASE_PACKAGES luci-i18n-package-manager-zh-cn"
 BASE_PACKAGES="$BASE_PACKAGES luci-compat"
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-firewall-zh-cn"
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-base-zh-cn"
-# 如果勾选了docker 务必保证软件包大小ROOTFS_PARTSIZE至少大于512 目前1024
-BASE_PACKAGES="$BASE_PACKAGES luci-i18n-dockerman-zh-cn"
 # 文件管理器
 BASE_PACKAGES="$BASE_PACKAGES luci-i18n-filemanager-zh-cn"
 # openlist用来平替alist 目前阿里云镜像仓库也有了
